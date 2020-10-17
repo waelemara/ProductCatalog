@@ -27,7 +27,13 @@ namespace ProductCatalog.Api.Domain.Product
         public async Task<GetSortedProductQueryResponse> Handle(GetSortedProductQuery getSortedProductQuery)
         {
             var products = await _productHttpClient.GetProducts();
-            return new GetSortedProductQueryResponse(products.ToList().OrderBy(product => product.Price));
+            var productList = products.ToList();
+            return getSortedProductQuery.SortOption switch
+            {
+                "Low" => new GetSortedProductQueryResponse(productList.OrderBy(product => product.Price)),
+                "High" => new GetSortedProductQueryResponse(productList.OrderByDescending(product => product.Price)),
+                _ => new GetSortedProductQueryResponse(productList)
+            };
         }
     }
 
