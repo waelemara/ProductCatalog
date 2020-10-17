@@ -6,7 +6,7 @@ namespace ProductCatalog.Api.Controllers
     [Route("user")]
     public class UserController : ControllerBase
     {
-        [HttpPost]
+        [HttpGet]
         public IActionResult FindUser()
         {
             return Ok(UserResponseModel.CreateForWael());

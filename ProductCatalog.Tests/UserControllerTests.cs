@@ -11,7 +11,7 @@ using Xunit;
 
 namespace ProductCatalog.Tests
 {
-    public class AnswersControllerTests
+    public class UserControllerTests
     {
         [Fact]
         public void FindUserReturnsCorrectDetails_ForWael()
@@ -28,7 +28,7 @@ namespace ProductCatalog.Tests
         public async Task UserEndpointIsConfiguredAndReturnsCorrectJsonResponse()
         {
             var httpClient = new WebApplicationFactory<ProductCatalog.Api.Startup>().Server.CreateClient();
-            var httpResponseMessage = await httpClient.PostAsync("/user", null);
+            var httpResponseMessage = await httpClient.GetAsync("/user");
             httpResponseMessage.StatusCode.Should().Be(StatusCodes.Status200OK);
             var readAsStringAsync = await httpResponseMessage.Content.ReadAsStringAsync();
             var userResponseModel = JsonConvert.DeserializeObject<UserResponseModel>(readAsStringAsync);
