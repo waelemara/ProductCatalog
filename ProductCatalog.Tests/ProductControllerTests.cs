@@ -36,7 +36,7 @@ namespace ProductCatalog.Tests
             httpResponseMessage.StatusCode.Should().Be(StatusCodes.Status200OK);
             var readAsStringAsync = await httpResponseMessage.Content.ReadAsStringAsync();
             var products = JsonConvert.DeserializeObject<Product[]>(readAsStringAsync);
-            products.Should().NotBeEmpty();
+            products.Should().Equal(ListOfProduct.SortedProductsFormHighToLow);
         }
     }
 }
