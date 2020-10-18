@@ -1,13 +1,12 @@
-using System.Collections.Generic;
 using Xunit;
-using System.Net.Http;
-using System.Net.Http.Headers;
+using System;
 using System.Text;
+using System.Net.Http;
 using FluentAssertions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Newtonsoft.Json;
 using ProductCatalog.Api.Domain.Trolley;
 
 namespace ProductCatalog.Tests
@@ -114,7 +113,7 @@ namespace ProductCatalog.Tests
         }
 
         [Fact]
-        public void test()
+        public void SpecialsAppliedMultipleTimes()
         {
             // Arrange
             var calculateTrolleyQuery = new CalculateTrolleyQuery
@@ -146,13 +145,77 @@ namespace ProductCatalog.Tests
             // Assert
             total.Should().Be(40.0d);
         }
+        
+        [Fact]
+        public void SpecialsDoesNotApply()
+        {
+            // Arrange
+            var calculateTrolleyQuery = new CalculateTrolleyQuery
+            {
+                Products = new List<Product>
+                {
+                    new Product("Product 1", 14.5),
+                    new Product("Product 2", 29.6),
+                    new Product("Product 3", 24)
+                },
+                Specials = new List<Special>
+                {
+                    new Special(new List<Quantity>
+                    {
+                        new Quantity("Product 1", 3),
+                        new Quantity("Product 2", 3)
+                    }, 20)
+                },
+                Quantities = new List<Quantity>
+                {
+                    new Quantity("Product 3", 1),
+                }
+            };
+
+            // Act
+            var total = new CalculateTrolleyQueryHandler().Handle(calculateTrolleyQuery);
+
+            // Assert
+            total.Should().Be(24d);
+        }
+        
+        [Fact]
+        public void InValidPurchasedQuantities()
+        {
+            // Arrange
+            var calculateTrolleyQuery = new CalculateTrolleyQuery
+            {
+                Products = new List<Product>
+                {
+                    new Product("Product 1", 14.5),
+                    new Product("Product 2", 29.6),
+                    new Product("Product 3", 24)
+                },
+                Specials = new List<Special>
+                {
+                    new Special(new List<Quantity>
+                    {
+                        new Quantity("Product 1", 3),
+                        new Quantity("Product 2", 3)
+                    }, 20)
+                },
+                Quantities = new List<Quantity>
+                {
+                    new Quantity("Product 3", 1),
+                    new Quantity("Product 3", 1),
+                }
+            };
+
+            // Act // Assert
+            Assert.Throws<ArgumentException>(() => new CalculateTrolleyQueryHandler().Handle(calculateTrolleyQuery));
+        }
 
 
         [Fact]
         public async Task SortEndpointIsConfiguredAndReturnsCorrectJsonResponseForRecommended()
         {
             // Arrange
-            var httpClient = new WebApplicationFactory<ProductCatalog.Api.Startup>().Server.CreateClient();
+            var httpClient = new WebApplicationFactory<Api.Startup>().Server.CreateClient();
             var requestContent =
                 "{\"products\": [{\"name\": \"test\",\"price\": 100.0}],\"specials\": [{\"quantities\": [{\"name\": \"test\",\"quantity\": 2}],\"total\":150}],\"quantities\": [{\"name\": \"test\",\"quantity\": 2}]}";
 
