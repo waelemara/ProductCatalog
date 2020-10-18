@@ -18,6 +18,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using ProductCatalog.Api.Domain.HttpClients;
 using ProductCatalog.Api.Domain.Product;
+using ProductCatalog.Api.Domain.Trolley;
 
 namespace ProductCatalog.Api
 {
@@ -35,6 +36,7 @@ namespace ProductCatalog.Api
         {
             services.AddControllers();
             services.AddTransient<GetSortedProductQueryHandler>();
+            services.AddTransient<CalculateTrolleyQueryHandler>();
             services.AddTransient<IProductHttpClient, ProductHttpClient>();
             services.AddTransient<IShopperHistoryHttpClient, ShopperHistoryHttpClient>();
             services.AddTransient<RecommendationsService>();
@@ -58,7 +60,7 @@ namespace ProductCatalog.Api
             {
                 endpoints.Map("/", async context => { await context.Response.WriteAsync("Welcome to Product Catalog API"); });
                 
-                endpoints.Map("/trolleyTotal", async context => { await WooliesXProxy.TrolleyCalculator(context); });
+                //endpoints.Map("/trolleyTotal", async context => { await WooliesXProxy.TrolleyCalculator(context); });
 
                 endpoints.MapControllers();
             });
