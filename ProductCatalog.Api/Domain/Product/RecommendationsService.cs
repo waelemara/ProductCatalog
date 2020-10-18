@@ -17,11 +17,10 @@ namespace ProductCatalog.Api.Domain.Product
         {
             var shopperHistory = await _shopperHistoryHttpClient.GetShopperHistory();
 
-            var productsOrderedBasedOnNumberOfOrders = from customerShopperHistory in shopperHistory
-                let allCustomerOrders = customerShopperHistory.Products
-                from customerOrder in allCustomerOrders
-                group customerOrder by customerOrder.Name
-                into ordersGroupedByName
+            var productsOrderedBasedOnNumberOfOrders = from shoppingHistory in shopperHistory
+                let allOrders = shoppingHistory.Products
+                from order in allOrders
+                group order by order.Name into ordersGroupedByName
                 let productsAndNumberOfOrders =new
                 {
                     NumberOfOrders = ordersGroupedByName.Sum(product => product.Quantity),
@@ -29,8 +28,6 @@ namespace ProductCatalog.Api.Domain.Product
                 }  
                 orderby productsAndNumberOfOrders.NumberOfOrders descending 
                 select productsAndNumberOfOrders.Product;
-
-            
             
             var orderedProducts = productsOrderedBasedOnNumberOfOrders.ToList();
             var productsThatWereNotOrdered = products.Except(orderedProducts);
