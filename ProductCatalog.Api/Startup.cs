@@ -56,6 +56,8 @@ namespace ProductCatalog.Api
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.Map("/", async context => { await context.Response.WriteAsync("Welcome to Product Catalog API"); });
+                
                 endpoints.Map("/trolleyTotal", async context => { await WooliesXProxy.TrolleyCalculator(context); });
 
                 endpoints.MapControllers();
