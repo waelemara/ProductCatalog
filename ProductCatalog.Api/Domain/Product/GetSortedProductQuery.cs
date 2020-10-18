@@ -32,6 +32,7 @@ namespace ProductCatalog.Api.Domain.Product
             {
                 "Low" => new GetSortedProductQueryResponse(productList.OrderBy(product => product.Price)),
                 "High" => new GetSortedProductQueryResponse(productList.OrderByDescending(product => product.Price)),
+                "Ascending" => new GetSortedProductQueryResponse(productList.OrderBy(product => product.Name)),
                 _ => new GetSortedProductQueryResponse(productList)
             };
         }

@@ -38,6 +38,15 @@ namespace ProductCatalog.Tests
             var getSortedProductQueryResponse = await getSortedProductQueryHandler.Handle(getSortedProductQuery);
             getSortedProductQueryResponse.Products.Should().Equal(ListOfProduct.SortedProductsFormHighToLow);
         }
+        
+        [Fact]
+        public async Task ShouldReturnSortedAscending()
+        {
+            var getSortedProductQuery = new GetSortedProductQuery("Ascending");
+            var getSortedProductQueryHandler = new GetSortedProductQueryHandler(StubProductsHttpClient.WithProducts(ListOfProduct.ANotSortedProductsFormLowToHigh));
+            var getSortedProductQueryResponse = await getSortedProductQueryHandler.Handle(getSortedProductQuery);
+            getSortedProductQueryResponse.Products.Should().Equal(ListOfProduct.SortedAscending);
+        }
     }
 
     public class StubProductsHttpClient : IProductHttpClient
