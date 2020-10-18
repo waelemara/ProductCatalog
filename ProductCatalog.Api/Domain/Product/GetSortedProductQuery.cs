@@ -1,6 +1,6 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using ProductCatalog.Api.Domain.HttpClients;
 
 namespace ProductCatalog.Api.Domain.Product

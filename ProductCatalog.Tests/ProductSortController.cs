@@ -1,16 +1,16 @@
-using System.Collections.Generic;
-using System.Net;
-using System.Threading.Tasks;
-using FluentAssertions;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Newtonsoft.Json;
-using ProductCatalog.Api.Controllers;
-using ProductCatalog.Api.Domain.Product;
-using ProductCatalog.Tests.DataHelpers;
-using ProductCatalog.Tests.Stubs;
 using Xunit;
+using System.Net;
+using Newtonsoft.Json;
+using FluentAssertions;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
+using ProductCatalog.Tests.Stubs;
+using ProductCatalog.Api.Controllers;
+using ProductCatalog.Tests.DataHelpers;
+using Microsoft.AspNetCore.Mvc.Testing;
+using ProductCatalog.Api.Domain.Product;
 
 namespace ProductCatalog.Tests
 {

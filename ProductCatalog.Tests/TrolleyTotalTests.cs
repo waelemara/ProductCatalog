@@ -1,12 +1,9 @@
+using Xunit;
 using System.Net.Http;
-using System.Threading.Tasks;
 using FluentAssertions;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Newtonsoft.Json;
-using ProductCatalog.Api.Domain.Product;
-using ProductCatalog.Tests.DataHelpers;
-using Xunit;
 
 namespace ProductCatalog.Tests
 {

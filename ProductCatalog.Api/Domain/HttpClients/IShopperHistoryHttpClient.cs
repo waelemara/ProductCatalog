@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Flurl;
 using Flurl.Http;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 using ProductCatalog.Api.Domain.Product;
 
 namespace ProductCatalog.Api.Domain.HttpClients
@@ -12,7 +10,6 @@ namespace ProductCatalog.Api.Domain.HttpClients
     {
         Task<IEnumerable<ShopperHistory>> GetShopperHistory();
     }
-
     
     public class ShopperHistoryHttpClient : IShopperHistoryHttpClient
     {
@@ -20,21 +17,12 @@ namespace ProductCatalog.Api.Domain.HttpClients
 
         public async Task<IEnumerable<ShopperHistory>> GetShopperHistory()
         {
-            try
-            {
-                var shopperHistories = await _shopperOrdersUrl
-                    .SetQueryParam("token", "25a4f06f-8fd5-49b3-a711-c013c156f8c8")
-                    .AllowAnyHttpStatus()
-                    .WithHeader("Accept","application/json")
-                    .GetJsonAsync<List<ShopperHistory>>();
-                return shopperHistories;
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            var shopperHistories = await _shopperOrdersUrl
+                .SetQueryParam("token", "25a4f06f-8fd5-49b3-a711-c013c156f8c8")
+                .AllowAnyHttpStatus()
+                .WithHeader("Accept", "application/json")
+                .GetJsonAsync<List<ShopperHistory>>();
+            return shopperHistories;
         }
     }
     

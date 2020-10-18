@@ -1,8 +1,8 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ProductCatalog.Api.Domain.HttpClients;
+using System.Collections.Generic;
 using ProductCatalog.Api.Domain.Product;
+using ProductCatalog.Api.Domain.HttpClients;
 
 namespace ProductCatalog.Tests.Stubs
 {

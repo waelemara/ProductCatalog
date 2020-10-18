@@ -56,26 +56,10 @@ namespace ProductCatalog.Api
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.Map("/trolleyTotal", async context => { await ProxyToWoolisX(context); });
+                endpoints.Map("/trolleyTotal", async context => { await WooliesXProxy.TrolleyCalculator(context); });
 
                 endpoints.MapControllers();
             });
-        }
-
-        private static async Task ProxyToWoolisX(HttpContext context)
-        {
-            var proxyUrl = "http://dev-wooliesx-recruitment.azurewebsites.net/api/resource/trolleyCalculator";
-            using var reader = new StreamReader(context.Request.Body, Encoding.UTF8);
-            var postRequestContent = await reader.ReadToEndAsync();
-            var postJsonAsync = proxyUrl
-                .SetQueryParam("token", "25a4f06f-8fd5-49b3-a711-c013c156f8c8")
-                .WithHeader("Accept", "application/json")
-                .WithHeader("Content-Type", "application/json-patch+json")
-                .PostAsync(new StringContent(postRequestContent));
-
-            var readAsStringAsync = await postJsonAsync.Result.Content.ReadAsStringAsync();
-
-            await context.Response.WriteAsync(readAsStringAsync);
         }
     }
 }

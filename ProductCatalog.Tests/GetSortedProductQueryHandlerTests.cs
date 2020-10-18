@@ -1,9 +1,9 @@
 using Xunit;
 using FluentAssertions;
 using System.Threading.Tasks;
-using ProductCatalog.Api.Domain.Product;
-using ProductCatalog.Tests.DataHelpers;
 using ProductCatalog.Tests.Stubs;
+using ProductCatalog.Tests.DataHelpers;
+using ProductCatalog.Api.Domain.Product;
 
 namespace ProductCatalog.Tests
 {
