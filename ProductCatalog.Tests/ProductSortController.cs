@@ -20,16 +20,17 @@ namespace ProductCatalog.Tests
         [Fact]
         public async Task SortUserReturnsCorrectDetails()
         {
+            // Act
             var result = await new ProductController(
                 new GetSortedProductQueryHandler(StubProductsHttpClient.WithEmptyProducts(),
                     new RecommendationsService(StubShopperHistoryHttpClient.WithNoHistory())))
                 .Sort("Low");
             
+            // Assert
             var actionResult = Assert.IsType<ActionResult<IEnumerable<Product>>>(result);
-            
             var okObjectResult = Assert.IsType<OkObjectResult>(actionResult.Result);
-            okObjectResult.StatusCode.Should().Be((int)HttpStatusCode.OK);
             
+            okObjectResult.StatusCode.Should().Be((int)HttpStatusCode.OK);
             var products = Assert.IsAssignableFrom<IEnumerable<Product>>(okObjectResult.Value);
             products.Should().BeEmpty();
         }
@@ -37,8 +38,13 @@ namespace ProductCatalog.Tests
         [Fact]
         public async Task SortEndpointIsConfiguredAndReturnsCorrectJsonResponse()
         {
+            // Arrange
             var httpClient = new WebApplicationFactory<ProductCatalog.Api.Startup>().Server.CreateClient();
+            
+            // Act
             var httpResponseMessage = await httpClient.GetAsync("/sort?sortOption=High");
+            
+            // Assert
             httpResponseMessage.StatusCode.Should().Be(StatusCodes.Status200OK);
             var readAsStringAsync = await httpResponseMessage.Content.ReadAsStringAsync();
             var products = JsonConvert.DeserializeObject<Product[]>(readAsStringAsync);
@@ -48,8 +54,13 @@ namespace ProductCatalog.Tests
         [Fact]
         public async Task SortEndpointIsConfiguredAndReturnsCorrectJsonResponseForRecommended()
         {
+            // Arrange
             var httpClient = new WebApplicationFactory<ProductCatalog.Api.Startup>().Server.CreateClient();
+            
+            // Act
             var httpResponseMessage = await httpClient.GetAsync("/sort?sortOption=Recommended");
+            
+            // Assert
             httpResponseMessage.StatusCode.Should().Be(StatusCodes.Status200OK);
             var readAsStringAsync = await httpResponseMessage.Content.ReadAsStringAsync();
             var products = JsonConvert.DeserializeObject<Product[]>(readAsStringAsync);

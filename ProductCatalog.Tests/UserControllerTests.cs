@@ -14,7 +14,10 @@ namespace ProductCatalog.Tests
         [Fact]
         public void FindUserReturnsCorrectDetails_ForWael()
         {
+            // Act
             var result = new UserController().FindUser();
+
+            // Assert
             var objectResult = Assert.IsType<OkObjectResult>(result);
             objectResult.StatusCode.Should().Be(StatusCodes.Status200OK);
             var userResponseModel = Assert.IsType<UserResponseModel>(objectResult.Value);
@@ -25,8 +28,13 @@ namespace ProductCatalog.Tests
         [Fact]
         public async Task UserEndpointIsConfiguredAndReturnsCorrectJsonResponse()
         {
+            // Arrange
             var httpClient = new WebApplicationFactory<ProductCatalog.Api.Startup>().Server.CreateClient();
+
+            // Act
             var httpResponseMessage = await httpClient.GetAsync("/user");
+
+            // Assert
             httpResponseMessage.StatusCode.Should().Be(StatusCodes.Status200OK);
             var readAsStringAsync = await httpResponseMessage.Content.ReadAsStringAsync();
             var userResponseModel = JsonConvert.DeserializeObject<UserResponseModel>(readAsStringAsync);
