@@ -30,6 +30,8 @@ namespace ProductCatalog.Api
             services.AddControllers();
             services.AddTransient<GetSortedProductQueryHandler>();
             services.AddTransient<IProductHttpClient,ProductHttpClient>();
+            services.AddTransient<IShopperHistoryHttpClient,ShopperHistoryHttpClient>();
+            services.AddTransient<RecommendationsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +54,4 @@ namespace ProductCatalog.Api
             });
         }
     }
-
-    
 }

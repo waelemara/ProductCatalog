@@ -18,10 +18,13 @@ namespace ProductCatalog.Api.Domain.Product
     public class GetSortedProductQueryHandler
     {
         private readonly IProductHttpClient _productHttpClient;
+        private readonly RecommendationsService _recommendationsService;
 
-        public GetSortedProductQueryHandler(IProductHttpClient productHttpClient)
+
+        public GetSortedProductQueryHandler(IProductHttpClient productHttpClient, RecommendationsService recommendationsService)
         {
             _productHttpClient = productHttpClient;
+            _recommendationsService = recommendationsService;
         }
 
         public async Task<GetSortedProductQueryResponse> Handle(GetSortedProductQuery getSortedProductQuery)
@@ -34,6 +37,7 @@ namespace ProductCatalog.Api.Domain.Product
                 "High" => new GetSortedProductQueryResponse(productList.OrderByDescending(product => product.Price)),
                 "Ascending" => new GetSortedProductQueryResponse(productList.OrderBy(product => product.Name)),
                 "Descending" => new GetSortedProductQueryResponse(productList.OrderByDescending(product => product.Name)),
+                "Recommended" => new GetSortedProductQueryResponse(await _recommendationsService.Recommend(productList)),
                 _ => new GetSortedProductQueryResponse(productList)
             };
         }
