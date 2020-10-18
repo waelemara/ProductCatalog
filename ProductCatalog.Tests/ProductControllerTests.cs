@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
@@ -14,12 +16,15 @@ namespace ProductCatalog.Tests
     {
         
         [Fact]
-        public void FindUserReturnsCorrectDetails_ForWael()
+        public async Task FindUserReturnsCorrectDetails_ForWael()
         {
-            var result = new ProductController().Sort("Low");
-            var objectResult = Assert.IsType<OkObjectResult>(result);
-            objectResult.StatusCode.Should().Be(StatusCodes.Status200OK);
-            var products = Assert.IsType<Product[]>(objectResult.Value);
+            var result = await new ProductController(new GetSortedProductQueryHandler(StubProductsHttpClient.WithEmptyProducts())).Sort("Low");
+            var actionResult = Assert.IsType<ActionResult<IEnumerable<Product>>>(result);
+            
+            var okObjectResult = Assert.IsType<OkObjectResult>(actionResult.Result);
+            okObjectResult.StatusCode.Should().Be((int)HttpStatusCode.OK);
+            
+            var products = Assert.IsAssignableFrom<IEnumerable<Product>>(okObjectResult.Value);
             products.Should().BeEmpty();
         }
 
@@ -31,7 +36,7 @@ namespace ProductCatalog.Tests
             httpResponseMessage.StatusCode.Should().Be(StatusCodes.Status200OK);
             var readAsStringAsync = await httpResponseMessage.Content.ReadAsStringAsync();
             var products = JsonConvert.DeserializeObject<Product[]>(readAsStringAsync);
-            products.Should().BeEmpty();
+            products.Should().NotBeEmpty();
         }
     }
 }

@@ -7,9 +7,9 @@ namespace ProductCatalog.Api.Domain.Product
     {
         [JsonProperty] public string Name { get; }
         [JsonProperty] public double Price { get; }
-        [JsonProperty] public int Quantity { get; }
+        [JsonProperty] public double Quantity { get; }
 
-        public Product(string name, double price, int quantity)
+        public Product(string name, double price, double quantity)
         {
             Name = name;
             Price = price;

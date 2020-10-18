@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using ProductCatalog.Api.Domain.HttpClients;
+using ProductCatalog.Api.Domain.Product;
 
 namespace ProductCatalog.Api
 {
@@ -26,6 +28,8 @@ namespace ProductCatalog.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddTransient<GetSortedProductQueryHandler>();
+            services.AddTransient<IProductHttpClient,ProductHttpClient>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,4 +52,6 @@ namespace ProductCatalog.Api
             });
         }
     }
+
+    
 }
